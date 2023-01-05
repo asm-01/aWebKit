@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">aWebKit</string>
+    
+    <string name="common_file" translatable="false">svg/light/common/file.svg</string>
+    <string name="common_file_media" translatable="false">svg/light/common/file-media.svg</string>
+    <string name="common_file_pdf" translatable="false">svg/light/common/file-pdf.svg</string>
+    <string name="common_file_zip" translatable="false">svg/light/common/file-zip.svg</string>
+    <string name="common_folder" translatable="false">svg/light/common/folder.svg</string>
+    <string name="ext_font" translatable="false">svg/light/ext/file_type_font.svg</string>
+    <string name="ext_javascript" translatable="false">svg/light/ext/file_type_js.svg</string>
+    <string name="ext_javascriptconfig" translatable="false">svg/light/ext/file_type_jsconfig.svg</string>
+    <string name="ext_javascriptmap" translatable="false">svg/light/ext/file_type_jsmap.svg</string>
+    <string name="ext_json" translatable="false">svg/light/ext/file_type_json.svg</string>
+    <string name="ext_yaml" translatable="false">svg/light/ext/file_type_yaml.svg</string>
+    
+    <string name="ext_actionscript" translatable="false">svg/common/ext/file_type_actionscript.svg</string>
+    <string name="ext_blade" translatable="false">svg/common/ext/file_type_blade.svg</string>
+    <string name="ext_css" translatable="false">svg/common/ext/file_type_css.svg</string>
+    <string name="ext_cssmap" translatable="false">svg/common/ext/file_type_cssmap.svg</string>
+    <string name="ext_favicon" translatable="false">svg/common/ext/file_type_favicon.svg</string>
+    <string name="ext_git" translatable="false">svg/common/ext/file_type_git.svg</string>
+    <string name="ext_html" translatable="false">svg/common/ext/file_type_html.svg</string>
+    <string name="ext_less" translatable="false">svg/common/ext/file_type_less.svg</string>
+    <string name="ext_license" translatable="false">svg/common/ext/file_type_license.svg</string>
+    <string name="ext_markdown" translatable="false">svg/common/ext/file_type_markdown.svg</string>
+    <string name="ext_npm" translatable="false">svg/common/ext/file_type_npm.svg</string>
+    <string name="ext_php" translatable="false">svg/common/ext/file_type_php.svg</string>
+    <string name="ext_sass" translatable="false">svg/common/ext/file_type_sass.svg</string>
+    <string name="ext_scss" translatable="false">svg/common/ext/file_type_scss.svg</string>
+    <string name="ext_svg" translatable="false">svg/common/ext/file_type_svg.svg</string>
+    <string name="ext_text" translatable="false">svg/common/ext/file_type_text.svg</string>
+    <string name="ext_tune" translatable="false">svg/common/ext/file_type_tune.svg</string>
+    <string name="ext_typescript" translatable="false">svg/common/ext/file_type_typescript.svg</string>
+    <string name="ext_xml" translatable="false">svg/common/ext/file_type_xml.svg</string>
+</resources>

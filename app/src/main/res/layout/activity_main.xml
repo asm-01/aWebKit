@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.AllowChildInterceptDrawerLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:id="@+id/drawerLayout"
+	tools:context=".MainActivity"
+    android:clickable="true">
+    
+	<androidx.coordinatorlayout.widget.CoordinatorLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+		
+		<com.google.android.material.appbar.AppBarLayout
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:background="?attr/colorSurface"
+        	android:id="@+id/appBarLayout"
+        	app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior">
+        
+        	<com.google.android.material.appbar.MaterialToolbar
+        		android:layout_width="match_parent"
+        		android:layout_height="?attr/actionBarSize"
+        		android:id="@+id/materialToolbar"
+                app:navigationIcon="@drawable/ic_menu"
+                app:menu="@menu/main_editor_menu"/>
+                    
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="start"
+                style="@style/AppTheme.TabLayout"/>
+        
+        </com.google.android.material.appbar.AppBarLayout>
+        
+		<androidx.fragment.app.FragmentContainerView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:name="androidx.navigation.fragment.NavHostFragment"
+			app:defaultNavHost="true"
+			app:navGraph="@navigation/nav_graph"
+			android:id="@+id/fragmentContainerView"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+			
+		<androidx.fragment.app.FragmentContainerView
+            android:id="@+id/bottomEditorContainer"
+            android:name="dev.asm.awebkit.ui.editor.BottomEditorFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="4dp"
+            app:behavior_peekHeight="45dp"
+            app:behavior_hideable="false"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            tools:layout="@layout/frag_bottom_editor" />
+
+	</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+	<com.google.android.material.navigation.NavigationView
+		android:layout_height="match_parent"
+		android:layout_width="wrap_content"
+		android:layout_gravity="start"
+		android:id="@+id/navigationView">
+
+		<androidx.fragment.app.FragmentContainerView
+			android:id="@+id/fileFragmentContainer"
+            android:name="dev.asm.awebkit.ui.file.FileFragment"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"/>
+
+	</com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.AllowChildInterceptDrawerLayout>
+

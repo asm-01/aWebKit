@@ -1,0 +1,13 @@
+<resources>
+    <string name="common_file" translatable="false">svg/dark/common/file.svg</string>
+    <string name="common_file_media" translatable="false">svg/dark/common/file-media.svg</string>
+    <string name="common_file_pdf" translatable="false">svg/dark/common/file-pdf.svg</string>
+    <string name="common_file_zip" translatable="false">svg/dark/common/file-zip.svg</string>
+    <string name="common_folder" translatable="false">svg/dark/common/folder.svg</string>
+    <string name="ext_font" translatable="false">svg/dark/ext/file_type_font.svg</string>
+    <string name="ext_javascript" translatable="false">svg/dark/ext/file_type_js.svg</string>
+    <string name="ext_javascriptconfig" translatable="false">svg/dark/ext/file_type_jsconfig.svg</string>
+    <string name="ext_javascriptmap" translatable="false">svg/dark/ext/file_type_jsmap.svg</string>
+    <string name="ext_json" translatable="false">svg/dark/ext/file_type_json.svg</string>
+    <string name="ext_yaml" translatable="false">svg/dark/ext/file_type_yaml.svg</string>
+</resources>

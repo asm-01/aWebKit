@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <LinearLayout
+        android:id="@+id/row_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+        
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <io.github.rosemoe.sora.widget.SymbolInputView
+                android:id="@+id/symbol_input"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:gravity="center_vertical"/>
+
+        </HorizontalScrollView>
+        
+        <LinearLayout
+    		android:orientation="horizontal"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content">
+    
+    		<androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cursor_shortcuts"
+                android:nestedScrollingEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"/>
+    
+    	</LinearLayout>
+        
+    </LinearLayout>
+    
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout"
+        style="@style/AppTheme.TabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"/>
+    
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
+        
+</LinearLayout>

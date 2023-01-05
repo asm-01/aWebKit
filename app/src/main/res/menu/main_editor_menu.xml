@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/action_undo"
+        android:icon="@drawable/ic_key_undo"
+        android:title="Undo"
+        app:showAsAction="always" />
+        
+    <item
+        android:id="@+id/action_redo"
+        android:icon="@drawable/ic_key_redo"
+        android:title="Redo"
+        app:showAsAction="always" />
+        
+    <item
+        android:id="@+id/action_more"
+        android:icon="@drawable/ic_more_vert"
+        android:title="More"
+        app:showAsAction="ifRoom">
+        
+        <menu>
+        
+            <item
+                android:id="@+id/action_save"
+                android:icon="@drawable/ic_save"
+                android:title="Save" />
+                
+            <item
+                android:id="@+id/action_saveas"
+                android:icon="@drawable/ic_save_as"
+                android:title="Save As"/>
+                
+            <item
+                android:id="@+id/action_pickfile"
+                android:icon="@drawable/ic_pick_file"
+                android:title="Open File"/>
+                
+            <item
+                android:id="@+id/action_pickfolder"
+                android:icon="@drawable/ic_pick_folder"
+                android:title="Open Folder"/>
+                
+            <item
+                android:id="@+id/action_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="Settings"/>
+                
+        </menu>
+        
+    </item>
+
+</menu>

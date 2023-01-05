@@ -1,0 +1,28 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="45dp">
+    
+    <io.github.rosemoe.sora.widget.CodeEditor
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:id="@+id/codeEditor"/>
+            
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+    	android:id="@+id/editorProgresser"
+    	android:layout_marginEnd="8dp"
+    	android:layout_marginStart="8dp"
+    	android:layout_marginTop="4dp"
+    	android:layout_marginBottom="4dp"
+    	app:trackThickness="2.5dp"
+    	app:minHideDelay="@integer/material_motion_duration_long_2"
+    	android:layout_gravity="end"
+    	android:indeterminate="true"
+    	android:layout_width="20dp"
+    	android:layout_height="20dp"
+    	app:indicatorSize="14dp"/>
+    
+</FrameLayout>

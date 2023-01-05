@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/menu_tfile_copy"
+        android:icon="@drawable/ic_content_copy"
+        android:title="Copy path"
+        app:showAsAction="always"/>
+        
+    <item
+        android:id="@+id/menu_tfile_rename"
+        android:icon="@drawable/ic_edit_enable"
+        android:title="Rename"
+        app:showAsAction="always"/>
+        
+    <item
+        android:id="@+id/menu_tfile_delete"
+        android:icon="@drawable/ic_delete"
+        android:title="Delete"
+        app:showAsAction="always"/>
+
+</menu>
