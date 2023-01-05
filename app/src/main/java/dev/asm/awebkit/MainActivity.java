@@ -79,28 +79,33 @@ public class MainActivity extends BaseActivity
     private void addSelectedFileAsTabs(){
         treeclickVM.getClickedFile().observe(this, uri -> {
             if(uri!=null){
-                tabMap.put(uri.getLastPathSegment(),uri);
+                var tabPath = uri.getLastPathSegment();
+                var tabName = tabPath.replaceFirst(".*/([^/?]+).*","$1");
+                
+                tabMap.put(tabName,uri);
+                
                 if(binding.tabLayout.getVisibility() == View.GONE){
                     binding.tabLayout.setVisibility(View.VISIBLE);
                 }
-                var documentFile = DocumentFileCompat.Companion.fromTreeUri(this, uri);
+                
                 var isExistTab = false;
                 var exitTabIndex = 0;
-                var fileName = documentFile.getName();
+                
                 //make sure do not add existing items
                 for(int i = 0 ; i < binding.tabLayout.getTabCount() ; i++){
-                    if(binding.tabLayout.getTabAt(i).getText().toString().equals(fileName)){
+                    if(binding.tabLayout.getTabAt(i).getText().toString().equals(tabName)){
                         isExistTab = true;
                         exitTabIndex = i;
                     }
                 }
                 if(!isExistTab){
-                    binding.tabLayout.addTab(binding.tabLayout.newTab().setText(fileName),true);
+                    binding.tabLayout.addTab(binding.tabLayout.newTab().setText(tabName),true);
                 }else{
                     if(binding.tabLayout.getSelectedTabPosition() != exitTabIndex){
                         binding.tabLayout.selectTab(binding.tabLayout.getTabAt(exitTabIndex),true);
                     }
                 }
+                //close drawer after item click
                 if(binding.drawerLayout.isOpen()){
                     binding.drawerLayout.closeDrawer(GravityCompat.START);
                 }
@@ -187,19 +192,18 @@ public class MainActivity extends BaseActivity
     
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
+        TabLayout.Tab mTab = binding.tabLayout.getTabAt(tab.getPosition());
+        var key = mTab.getText().toString();
+        
         PopupMenu pm = new PopupMenu(this,tab.view);
         pm.inflate(R.menu.tab_popup_menu);
         pm.setGravity(GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK);
         pm.setOnMenuItemClickListener((menuItem)->{
             switch(menuItem.getItemId()){
                 case R.id.menu_tab_close:
-                    binding.tabLayout.removeTab(tab);
-                    try{
-                        if(tabMap.containsKey(tab.getText().toString())){
-                            tabMap.remove(tab.getText().toString());
-                        }
-                    }catch(Exception e){
-                        BaseApp.showToast(e.getMessage());
+                    binding.tabLayout.removeTab(mTab);
+                    if(tabMap.containsKey(key)){
+                        tabMap.remove(key);
                     }
                     treeclickVM.setClickededFile(null);
                     return true;
@@ -225,7 +229,9 @@ public class MainActivity extends BaseActivity
     
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        var key = tab.getText().toString();
+        TabLayout.Tab mTab = binding.tabLayout.getTabAt(tab.getPosition());
+        var key = mTab.getText().toString();
+        
         if(!tabMap.isEmpty() && tabMap.containsKey(key)){
             BaseApp.showToast(tabMap.get(key).toString());
         }
@@ -234,6 +240,7 @@ public class MainActivity extends BaseActivity
     
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
+        TabLayout.Tab mTab = binding.tabLayout.getTabAt(tab.getPosition());
         
     }
     

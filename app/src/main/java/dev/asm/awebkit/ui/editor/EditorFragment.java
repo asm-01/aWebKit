@@ -47,6 +47,7 @@ public class EditorFragment extends BaseFragment {
         binding.codeEditor.setTypefaceText(Typeface.createFromAsset(requireActivity().getAssets(),"fonts/JetBrainsMono-Regular.ttf"));
         binding.codeEditor.setLineSpacing(2f, 1.1f);
         setEditorLanguageAndTheme("darcula.json","html","html.tmLanguage.json");
+        binding.codeEditor.setEditable(false);
         
     }
     
