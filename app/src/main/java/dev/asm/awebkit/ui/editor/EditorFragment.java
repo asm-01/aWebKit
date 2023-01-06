@@ -1,6 +1,7 @@
 package dev.asm.awebkit.ui.editor;
 
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.ViewGroup;
@@ -10,11 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import dev.asm.awebkit.databinding.FragEditorBinding;
 import dev.asm.awebkit.ui.base.BaseFragment;
+import dev.asm.awebkit.viewmodels.tabs.TabItemViewModel;
 import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage;
+import io.github.rosemoe.sora.text.ContentCreator;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import org.eclipse.tm4e.core.internal.theme.reader.ThemeReader;
 import org.eclipse.tm4e.core.theme.IRawTheme;
@@ -25,6 +29,8 @@ public class EditorFragment extends BaseFragment {
     
     private static FragEditorBinding binding;
     private EditorColorScheme editorColorScheme;
+    
+    private TabItemViewModel tabitemVM;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,9 +52,29 @@ public class EditorFragment extends BaseFragment {
         
         binding.codeEditor.setTypefaceText(Typeface.createFromAsset(requireActivity().getAssets(),"fonts/JetBrainsMono-Regular.ttf"));
         binding.codeEditor.setLineSpacing(2f, 1.1f);
-        setEditorLanguageAndTheme("darcula.json","html","html.tmLanguage.json");
-        binding.codeEditor.setEditable(false);
         
+        tabitemVM.getRequestedUri().observe(getViewLifecycleOwner(), uri -> {
+            if(uri == null){
+                binding.codeEditor.setText("");
+                binding.codeEditor.setEditable(false);
+                return;
+            }
+            var extension = uri.getLastPathSegment();
+            if(extension.endsWith(".html")){
+                setEditorLanguageAndTheme("Dracula.tmTheme","html","html.tmLanguage.json");
+            }else if(extension.endsWith(".css")){
+                setEditorLanguageAndTheme("Dracula.tmTheme","css","css.tmLanguage.json");
+            }else if(extension.endsWith(".js")){
+                setEditorLanguageAndTheme("Dracula.tmTheme","javascript","javascript.tmLanguage.json");
+            }else if(extension.endsWith(".php")){
+                setEditorLanguageAndTheme("Dracula.tmTheme","php","php.tmLanguage.json");
+            }
+            if(!binding.codeEditor.isEditable()){
+                binding.codeEditor.setEditable(true);
+            }
+            binding.codeEditor.setText("");
+            binding.codeEditor.setText(getContentFromUri(uri));
+        });
     }
     
     @Override
@@ -90,5 +116,18 @@ public class EditorFragment extends BaseFragment {
     @Override
     public void initViewModels() {
         super.initViewModels();
+        tabitemVM = new ViewModelProvider(requireActivity()).get(TabItemViewModel.class);
     }
+    
+    private String getContentFromUri(Uri uri){
+        var content = "";
+        try{
+            var inputStream = requireActivity().getContentResolver().openInputStream(uri);
+            content = ContentCreator.fromStream(inputStream).toString();
+        }catch(Exception e){
+            content = e.getMessage();
+        }
+        return content;
+    }
+    
 }

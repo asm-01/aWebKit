@@ -27,6 +27,8 @@ public class BottomEditorFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initViewModels();
+        
         var inputView = binding.symbolInput;
         try{
             inputView.bindEditor(EditorFragment.getCodeEditor());
@@ -41,6 +43,14 @@ public class BottomEditorFragment extends BaseFragment {
                 "{}","}","()",")","<>",">","[]","]"
             }
         );
+        
+        bottomsheetVM.getCurrentState().observe(getViewLifecycleOwner(), state -> {
+            if(state == BottomSheetBehavior.STATE_EXPANDED){
+                binding.symbolInput.setVisibility(View.GONE);
+            }else{
+                binding.symbolInput.setVisibility(View.VISIBLE);
+            }
+        });
     }
     
     @Override

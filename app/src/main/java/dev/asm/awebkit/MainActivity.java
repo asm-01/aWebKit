@@ -24,6 +24,8 @@ import dev.asm.awebkit.ui.base.BaseActivity;
 import dev.asm.awebkit.ui.editor.BottomSheetViewModel;
 import dev.asm.awebkit.ui.file.TreeClickViewModel;
 import dev.asm.awebkit.ui.main.DocumentFilePickerViewModel;
+import dev.asm.awebkit.viewmodels.tabs.TabItemViewModel;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 public class MainActivity extends BaseActivity
@@ -37,6 +39,7 @@ public class MainActivity extends BaseActivity
     
     private BottomSheetViewModel bottomsheetVM;
     private DocumentFilePickerViewModel documentfilepickerVM;
+    private TabItemViewModel tabitemVM;
     private TreeClickViewModel treeclickVM;
     
     private HashMap<String,Uri> tabMap = new HashMap<String,Uri>();
@@ -112,6 +115,7 @@ public class MainActivity extends BaseActivity
             }else{
                 if(binding.tabLayout.getTabCount()==0){
                     binding.tabLayout.setVisibility(View.GONE);
+                    tabitemVM.setRequestedUri(null);
                 }
             }
         });
@@ -176,6 +180,7 @@ public class MainActivity extends BaseActivity
         super.initViewModels();
         bottomsheetVM = new ViewModelProvider(MainActivity.this).get(BottomSheetViewModel.class);
         documentfilepickerVM = new ViewModelProvider(MainActivity.this).get(DocumentFilePickerViewModel.class);
+        tabitemVM = new ViewModelProvider(MainActivity.this).get(TabItemViewModel.class);
         treeclickVM = new ViewModelProvider(MainActivity.this).get(TreeClickViewModel.class);
     }
     
@@ -206,6 +211,9 @@ public class MainActivity extends BaseActivity
                         tabMap.remove(key);
                     }
                     treeclickVM.setClickededFile(null);
+                    if(binding.tabLayout.getTabCount() == 0){
+                        tabitemVM.setRequestedUri(null);
+                    }
                     return true;
                 case R.id.menu_tab_closeothers:
                     /*for(int i = 0 ; i <= binding.tabLayout.getTabCount() ; i++ ){
@@ -233,15 +241,14 @@ public class MainActivity extends BaseActivity
         var key = mTab.getText().toString();
         
         if(!tabMap.isEmpty() && tabMap.containsKey(key)){
-            BaseApp.showToast(tabMap.get(key).toString());
+            //BaseApp.showToast(tabMap.get(key).toString());
+            tabitemVM.setRequestedUri(tabMap.get(key));
         }
-        BaseApp.showToast(tabMap.size()+"");
     }
     
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
         TabLayout.Tab mTab = binding.tabLayout.getTabAt(tab.getPosition());
-        
     }
     
 }
