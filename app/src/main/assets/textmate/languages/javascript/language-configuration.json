@@ -1,5 +1,4 @@
 {
-	// Note that this file should stay in sync with 'typescript-language-basics/language-configuration.json'
 	"comments": {
 		"lineComment": "//",
 		"blockComment": [
@@ -106,9 +105,7 @@
 			"end": "^\\s*//\\s*#?endregion\\b"
 		}
 	},
-	"wordPattern": {
-		"pattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\@\\!\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>/\\?\\s]+)",
-	},
+	"wordPattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\!\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>/\\?\\s]+)",
 	"indentationRules": {
 		"decreaseIndentPattern": {
 			"pattern": "^((?!.*?/\\*).*\\*\/)?\\s*[\\}\\]].*$"
@@ -116,14 +113,13 @@
 		"increaseIndentPattern": {
 			"pattern": "^((?!//).)*(\\{([^}\"'`/]*|(\\t|[ ])*//.*)|\\([^)\"'`/]*|\\[[^\\]\"'`/]*)$"
 		},
-		// e.g.  * ...| or */| or *-----*/|
+
 		"unIndentedLinePattern": {
 			"pattern": "^(\\t|[ ])*[ ]\\*[^/]*\\*/\\s*$|^(\\t|[ ])*[ ]\\*/\\s*$|^(\\t|[ ])*[ ]\\*([ ]([^\\*]|\\*(?!/))*)?$"
 		}
 	},
 	"onEnterRules": [
 		{
-			// e.g. /** | */
 			"beforeText": {
 				"pattern": "^\\s*/\\*\\*(?!/)([^\\*]|\\*(?!/))*$"
 			},
@@ -136,7 +132,7 @@
 			}
 		},
 		{
-			// e.g. /** ...|
+
 			"beforeText": {
 				"pattern": "^\\s*/\\*\\*(?!/)([^\\*]|\\*(?!/))*$"
 			},
@@ -146,7 +142,6 @@
 			}
 		},
 		{
-			// e.g.  * ...|
 			"beforeText": {
 				"pattern": "^(\\t|[ ])*[ ]\\*([ ]([^\\*]|\\*(?!/))*)?$"
 			},
@@ -159,24 +154,24 @@
 			}
 		},
 		{
-			// e.g.  */|
+
 			"beforeText": {
 				"pattern": "^(\\t|[ ])*[ ]\\*/\\s*$"
 			},
 			"action": {
 				"indent": "none",
 				"removeText": 1
-			},
+			}
 		},
 		{
-			// e.g.  *-----*/|
+
 			"beforeText": {
 				"pattern": "^(\\t|[ ])*[ ]\\*[^/]*\\*/\\s*$"
 			},
 			"action": {
 				"indent": "none",
 				"removeText": 1
-			},
+			}
 		},
 		{
 			"beforeText": {

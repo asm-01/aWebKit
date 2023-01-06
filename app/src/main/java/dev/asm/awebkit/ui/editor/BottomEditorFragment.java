@@ -46,7 +46,7 @@ public class BottomEditorFragment extends BaseFragment {
         
         bottomsheetVM.getCurrentState().observe(getViewLifecycleOwner(), state -> {
             if(state == BottomSheetBehavior.STATE_EXPANDED){
-                binding.symbolInput.setVisibility(View.GONE);
+                binding.symbolInput.setVisibility(View.INVISIBLE);
             }else{
                 binding.symbolInput.setVisibility(View.VISIBLE);
             }

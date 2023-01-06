@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/row_layout"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/editor_sheet_peek_height"
         android:orientation="horizontal">
         
         <HorizontalScrollView
@@ -17,7 +17,7 @@
             <io.github.rosemoe.sora.widget.SymbolInputView
                 android:id="@+id/symbol_input"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
+                android:layout_height="@dimen/editor_sheet_peek_height"
                 android:gravity="center_vertical"/>
 
         </HorizontalScrollView>
@@ -31,7 +31,7 @@
                 android:id="@+id/cursor_shortcuts"
                 android:nestedScrollingEnabled="false"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"/>
+                android:layout_height="@dimen/editor_sheet_peek_height"/>
     
     	</LinearLayout>
         

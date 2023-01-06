@@ -51,6 +51,9 @@ public class MainActivity extends BaseActivity
                 BaseApp.applicationContext.getContentResolver().takePersistableUriPermission(uri,takeFlags);
                 documentfilepickerVM.setTreeDataUri(uri);
                 binding.drawerLayout.openDrawer(GravityCompat.START);
+                binding.tabLayout.removeAllTabs();
+                tabMap.clear();
+                treeclickVM.setClickededFile(null);
             }
         }
     );

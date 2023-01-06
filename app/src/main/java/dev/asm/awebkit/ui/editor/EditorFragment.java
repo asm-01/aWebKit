@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.view.View;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import dev.asm.awebkit.databinding.FragEditorBinding;
 import dev.asm.awebkit.ui.base.BaseFragment;
@@ -59,16 +60,8 @@ public class EditorFragment extends BaseFragment {
                 binding.codeEditor.setEditable(false);
                 return;
             }
-            var extension = uri.getLastPathSegment();
-            if(extension.endsWith(".html")){
-                setEditorLanguageAndTheme("Dracula.tmTheme","html","html.tmLanguage.json");
-            }else if(extension.endsWith(".css")){
-                setEditorLanguageAndTheme("Dracula.tmTheme","css","css.tmLanguage.json");
-            }else if(extension.endsWith(".js")){
-                setEditorLanguageAndTheme("Dracula.tmTheme","javascript","javascript.tmLanguage.json");
-            }else if(extension.endsWith(".php")){
-                setEditorLanguageAndTheme("Dracula.tmTheme","php","php.tmLanguage.json");
-            }
+            
+            setupEditorThemeAndLanguage("Dracula.tmTheme",uri.getLastPathSegment());
             if(!binding.codeEditor.isEditable()){
                 binding.codeEditor.setEditable(true);
             }
@@ -82,7 +75,7 @@ public class EditorFragment extends BaseFragment {
         super.onDestroyView();
     }
     
-    private void setEditorLanguageAndTheme(@NonNull String themeName,@NonNull String langExtension, @NonNull String langName){
+    private void setEditorLanguageAndTheme(@Nullable String themeName,@Nullable String langExtension, @Nullable String langName){
         try {
             editorColorScheme = binding.codeEditor.getColorScheme();
             if (!(editorColorScheme instanceof TextMateColorScheme)) {
@@ -130,4 +123,27 @@ public class EditorFragment extends BaseFragment {
         return content;
     }
     
+    private void setupEditorThemeAndLanguage(String themeName, String extension){
+        if(extension.endsWith(".html")){//d
+            setEditorLanguageAndTheme(themeName,"html","html.tmLanguage.json");
+        }else if(extension.endsWith(".css")){//d
+            setEditorLanguageAndTheme(themeName,"css","css.tmLanguage.json");
+        }else if(extension.endsWith(".js")){//d
+            setEditorLanguageAndTheme(themeName,"javascript","javascript.tmLanguage.json");
+        }else if(extension.endsWith(".php")){
+            setEditorLanguageAndTheme(themeName,"php","php.tmLanguage.json");
+        }else if(extension.endsWith(".json")){
+            setEditorLanguageAndTheme(themeName,"json","json.tmLanguage.json");
+        }else if(extension.endsWith(".yaml")){
+            setEditorLanguageAndTheme(themeName,"yaml","yaml.tmLanguage.json");
+        }else if(extension.endsWith(".md")){//d
+            setEditorLanguageAndTheme(themeName,"markdown","markdown.tmLanguage.json");
+        }else if(extension.endsWith(".xml")){//d
+            setEditorLanguageAndTheme(themeName,"xml","xml.tmLanguage.json");
+        }else if(extension.endsWith(".scss")){//d
+            setEditorLanguageAndTheme(themeName,"scss","scss.tmLanguage.json");
+        }else{
+            setEditorLanguageAndTheme(null,null,null);
+        }
+    }
 }
