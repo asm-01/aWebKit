@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
+import dev.asm.awebkit.BaseApp;
 import dev.asm.awebkit.databinding.ActivityMainBinding;
 import dev.asm.awebkit.pojos.TabModel;
 import dev.asm.awebkit.ui.base.BaseActivity;
@@ -224,11 +225,13 @@ public class MainActivity extends BaseActivity
                     }
                     return true;
                 case R.id.menu_tab_closeothers:
-                    /*for(int i = 0 ; i <= binding.tabLayout.getTabCount() ; i++ ){
-                        if(i != tab.getPosition()){
-                            binding.tabLayout.removeTabAt(i);
+                    for(int i = 0 ; i <= binding.tabLayout.getTabCount() ; i++ ){
+                        if(i != position){
+                            uniqueTabItems.remove(position);
+                            TabLayout.Tab rTab = binding.tabLayout.getTabAt(i);
+                            binding.tabLayout.removeTab(rTab);
                         }
-                    }*/
+                    }
                     treeclickVM.setClickededFile(null);
                     return true;
                 case R.id.menu_tab_closeall:

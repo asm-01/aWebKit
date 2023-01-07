@@ -44,6 +44,7 @@ public class BottomEditorFragment extends BaseFragment {
                 "\t","<>",">","()",")","{}","}",",",".",";","\"","?","+","-","*","/"
             }
         );
+        
         bottomsheetVM.getCurrentState().observe(getViewLifecycleOwner(), state -> {
             if(state == BottomSheetBehavior.STATE_EXPANDED){
                 binding.symbolInput.setVisibility(View.INVISIBLE);

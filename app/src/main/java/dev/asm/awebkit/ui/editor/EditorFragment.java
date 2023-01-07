@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import dev.asm.awebkit.databinding.FragEditorBinding;
 import dev.asm.awebkit.ui.base.BaseFragment;
 import dev.asm.awebkit.viewmodels.tabs.TabItemViewModel;
+import io.github.rosemoe.sora.lang.EmptyLanguage;
 import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage;
@@ -85,7 +86,8 @@ public class EditorFragment extends BaseFragment {
                 editorColorScheme = TextMateColorScheme.create(iRawTheme);
                 binding.codeEditor.setColorScheme(editorColorScheme);
             }
-            Language language =
+            if(langExtension != null && langName != null){
+                Language language =
             	TextMateLanguage.create(
                 langName,
                 requireActivity()
@@ -97,6 +99,9 @@ public class EditorFragment extends BaseFragment {
                         .open("textmate/languages/"+langExtension+"/language-configuration.json")),
                 ((TextMateColorScheme) editorColorScheme).getRawTheme());
             binding.codeEditor.setEditorLanguage(language);
+            }else{
+                binding.codeEditor.setEditorLanguage(new EmptyLanguage());
+            }
         } catch (Exception e) {
         	Log.e(TAG,e.getMessage());
         }
@@ -124,24 +129,36 @@ public class EditorFragment extends BaseFragment {
     }
     
     private void setupEditorThemeAndLanguage(String themeName, String extension){
-        if(extension.endsWith(".html")){//d
-            setEditorLanguageAndTheme(themeName,"html","html.tmLanguage.json");
-        }else if(extension.endsWith(".css")){//d
+        if(extension.endsWith(".css")){//d
             setEditorLanguageAndTheme(themeName,"css","css.tmLanguage.json");
+        }else if(extension.endsWith(".html")){//d
+            setEditorLanguageAndTheme(themeName,"html","html.tmLanguage.json");
+        }if(extension.endsWith(".java")){//d
+            setEditorLanguageAndTheme(themeName,"java","java.tmLanguage.json");
         }else if(extension.endsWith(".js")){//d
             setEditorLanguageAndTheme(themeName,"javascript","javascript.tmLanguage.json");
-        }else if(extension.endsWith(".php")){
-            setEditorLanguageAndTheme(themeName,"php","php.tmLanguage.json");
         }else if(extension.endsWith(".json")){
             setEditorLanguageAndTheme(themeName,"json","json.tmLanguage.json");
-        }else if(extension.endsWith(".yaml")){
-            setEditorLanguageAndTheme(themeName,"yaml","yaml.tmLanguage.json");
+        }else if(extension.endsWith(".kt")){
+            setEditorLanguageAndTheme(themeName,"kotlin","kotlin.tmLanguage");
+        }else if(extension.endsWith(".less")){
+            setEditorLanguageAndTheme(themeName,"less","less.tmLanguage.json");
+        }else if(extension.endsWith(".lua")){
+            setEditorLanguageAndTheme(themeName,"lua","lua.tmLanguage.json");
         }else if(extension.endsWith(".md")){//d
             setEditorLanguageAndTheme(themeName,"markdown","markdown.tmLanguage.json");
-        }else if(extension.endsWith(".xml")){//d
-            setEditorLanguageAndTheme(themeName,"xml","xml.tmLanguage.json");
+        }else if(extension.endsWith(".php")){
+            setEditorLanguageAndTheme(themeName,"php","php.tmLanguage.json");
+        }else if(extension.endsWith(".py")){//d
+            setEditorLanguageAndTheme(themeName,"python","python.tmLanguage.json");
         }else if(extension.endsWith(".scss")){//d
             setEditorLanguageAndTheme(themeName,"scss","scss.tmLanguage.json");
+        }else if(extension.endsWith(".ts")){//d
+            setEditorLanguageAndTheme(themeName,"typescript","typescript.tmLanguage.json");
+        }else if(extension.endsWith(".xml")){//d
+            setEditorLanguageAndTheme(themeName,"xml","xml.tmLanguage.json");
+        }else if(extension.endsWith(".yaml")){
+            setEditorLanguageAndTheme(themeName,"yaml","yaml.tmLanguage.json");
         }else{
             setEditorLanguageAndTheme(null,null,null);
         }
