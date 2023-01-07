@@ -18,7 +18,7 @@ import com.caverock.androidsvg.SVGImageView;
 import com.caverock.androidsvg.SVGParseException;
 import com.lazygeniouz.filecompat.file.DocumentFileCompat;
 import dev.asm.awebkit.R;
-import dev.asm.awebkit.ui.file.TreeClickViewModel;
+import dev.asm.awebkit.viewmodels.files.TreeClickViewModel;
 import io.github.ikws4.treeview.TreeItem;
 import io.github.ikws4.treeview.TreeView;
 import java.io.IOException;

@@ -17,16 +17,14 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
-import com.lazygeniouz.filecompat.file.DocumentFileCompat;
-import dev.asm.awebkit.BaseApp;
 import dev.asm.awebkit.databinding.ActivityMainBinding;
+import dev.asm.awebkit.pojos.TabModel;
 import dev.asm.awebkit.ui.base.BaseActivity;
-import dev.asm.awebkit.ui.editor.BottomSheetViewModel;
-import dev.asm.awebkit.ui.file.TreeClickViewModel;
-import dev.asm.awebkit.ui.main.DocumentFilePickerViewModel;
+import dev.asm.awebkit.viewmodels.bottomsheets.BottomSheetViewModel;
+import dev.asm.awebkit.viewmodels.files.DocumentFilePickerViewModel;
+import dev.asm.awebkit.viewmodels.files.TreeClickViewModel;
 import dev.asm.awebkit.viewmodels.tabs.TabItemViewModel;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity
     implements NavController.OnDestinationChangedListener, TabLayout.OnTabSelectedListener {
@@ -42,7 +40,8 @@ public class MainActivity extends BaseActivity
     private TabItemViewModel tabitemVM;
     private TreeClickViewModel treeclickVM;
     
-    private HashMap<String,Uri> tabMap = new HashMap<String,Uri>();
+    //private HashMap<String,Uri> tabMap = new HashMap<String,Uri>();
+    private ArrayList<TabModel> uniqueTabItems = new ArrayList<>();
     
     ActivityResultLauncher<Uri> mStartForResult = registerForActivityResult(
     	new ActivityResultContracts.OpenDocumentTree(),uri -> {
@@ -52,7 +51,8 @@ public class MainActivity extends BaseActivity
                 documentfilepickerVM.setTreeDataUri(uri);
                 binding.drawerLayout.openDrawer(GravityCompat.START);
                 binding.tabLayout.removeAllTabs();
-                tabMap.clear();
+                //tabMap.clear();
+                uniqueTabItems.clear();
                 treeclickVM.setClickededFile(null);
             }
         }
@@ -78,8 +78,7 @@ public class MainActivity extends BaseActivity
         binding.tabLayout.addOnTabSelectedListener(this);
         binding.tabLayout.setVisibility(View.GONE);
         addSelectedFileAsTabs();
-        tabMap.clear();
-        
+        uniqueTabItems.clear();
     }
     
     private void addSelectedFileAsTabs(){
@@ -87,8 +86,6 @@ public class MainActivity extends BaseActivity
             if(uri!=null){
                 var tabPath = uri.getLastPathSegment();
                 var tabName = tabPath.replaceFirst(".*/([^/?]+).*","$1");
-                
-                tabMap.put(tabName,uri);
                 
                 if(binding.tabLayout.getVisibility() == View.GONE){
                     binding.tabLayout.setVisibility(View.VISIBLE);
@@ -105,12 +102,22 @@ public class MainActivity extends BaseActivity
                     }
                 }
                 if(!isExistTab){
+                    uniqueTabItems.add(new TabModel(tabName,uri));
                     binding.tabLayout.addTab(binding.tabLayout.newTab().setText(tabName),true);
                 }else{
-                    if(binding.tabLayout.getSelectedTabPosition() != exitTabIndex){
-                        binding.tabLayout.selectTab(binding.tabLayout.getTabAt(exitTabIndex),true);
+                    if(tabPath.equals(uniqueTabItems.get(exitTabIndex).getUri().getLastPathSegment())){
+                        //existing tab with the same filepath
+                        if(binding.tabLayout.getSelectedTabPosition() != exitTabIndex){
+                            binding.tabLayout.selectTab(binding.tabLayout.getTabAt(exitTabIndex),true);
+                         }
+                    }else{
+                        //existing tab but filepath is different
+                        //so add as new one
+                        uniqueTabItems.add(new TabModel(tabName,uri));
+                        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(tabName),true);
                     }
                 }
+                
                 //close drawer after item click
                 if(binding.drawerLayout.isOpen()){
                     binding.drawerLayout.closeDrawer(GravityCompat.START);
@@ -201,7 +208,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
         TabLayout.Tab mTab = binding.tabLayout.getTabAt(tab.getPosition());
-        var key = mTab.getText().toString();
+        var position = mTab.getPosition();
         
         PopupMenu pm = new PopupMenu(this,tab.view);
         pm.inflate(R.menu.tab_popup_menu);
@@ -209,10 +216,8 @@ public class MainActivity extends BaseActivity
         pm.setOnMenuItemClickListener((menuItem)->{
             switch(menuItem.getItemId()){
                 case R.id.menu_tab_close:
+                    uniqueTabItems.remove(position);
                     binding.tabLayout.removeTab(mTab);
-                    if(tabMap.containsKey(key)){
-                        tabMap.remove(key);
-                    }
                     treeclickVM.setClickededFile(null);
                     if(binding.tabLayout.getTabCount() == 0){
                         tabitemVM.setRequestedUri(null);
@@ -227,8 +232,8 @@ public class MainActivity extends BaseActivity
                     treeclickVM.setClickededFile(null);
                     return true;
                 case R.id.menu_tab_closeall:
+                    uniqueTabItems.clear();
                     binding.tabLayout.removeAllTabs();
-                    tabMap.clear();
                     treeclickVM.setClickededFile(null);
                     return true;
                 default:
@@ -241,11 +246,9 @@ public class MainActivity extends BaseActivity
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         TabLayout.Tab mTab = binding.tabLayout.getTabAt(tab.getPosition());
-        var key = mTab.getText().toString();
-        
-        if(!tabMap.isEmpty() && tabMap.containsKey(key)){
-            //BaseApp.showToast(tabMap.get(key).toString());
-            tabitemVM.setRequestedUri(tabMap.get(key));
+        var position = mTab.getPosition();
+        if(position<uniqueTabItems.size() && !uniqueTabItems.isEmpty()){
+            tabitemVM.setRequestedUri(uniqueTabItems.get(position).getUri());
         }
     }
     

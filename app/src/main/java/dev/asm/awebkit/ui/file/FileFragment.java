@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import com.lazygeniouz.filecompat.file.DocumentFileCompat;
 import dev.asm.awebkit.databinding.FragFileBinding;
-import dev.asm.awebkit.ui.main.DocumentFilePickerViewModel;
+import dev.asm.awebkit.viewmodels.files.DocumentFilePickerViewModel;
 
 public class FileFragment extends Fragment {
     

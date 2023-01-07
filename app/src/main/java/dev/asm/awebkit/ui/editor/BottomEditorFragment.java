@@ -11,6 +11,7 @@ import dev.asm.awebkit.BaseApp;
 import dev.asm.awebkit.databinding.FragBottomEditorBinding;
 import dev.asm.awebkit.ui.base.BaseFragment;
 import dev.asm.awebkit.ui.editor.EditorFragment;
+import dev.asm.awebkit.viewmodels.bottomsheets.BottomSheetViewModel;
 
 public class BottomEditorFragment extends BaseFragment {
     
@@ -37,13 +38,12 @@ public class BottomEditorFragment extends BaseFragment {
         }
         inputView.addSymbols(
         	new String[]{
-                "{","}","(",")","<",">","[","]"
+                "->","<",">","(",")","{","}",",",".",";","\"","?","+","-","*","/"
             },
             new String[]{
-                "{}","}","()",")","<>",">","[]","]"
+                "\t","<>",">","()",")","{}","}",",",".",";","\"","?","+","-","*","/"
             }
         );
-        
         bottomsheetVM.getCurrentState().observe(getViewLifecycleOwner(), state -> {
             if(state == BottomSheetBehavior.STATE_EXPANDED){
                 binding.symbolInput.setVisibility(View.INVISIBLE);
