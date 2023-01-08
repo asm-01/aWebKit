@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace 'dev.asm.awebkit'
     compileSdk rootProject.ext.compileSdk
     buildToolsVersion rootProject.ext.buildTools
 
@@ -58,9 +59,10 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata:2.4.1'
     implementation 'com.google.android.material:material:1.7.0'
 	
-    implementation 'io.github.Rosemoe.sora-editor:editor:0.15.1'
-	//implementation 'io.github.Rosemoe.sora-editor:editor-lsp:0.15.1'
-    implementation 'io.github.Rosemoe.sora-editor:language-textmate:0.15.1'
+    implementation 'io.github.Rosemoe.sora-editor:editor:0.20.4'
+	//implementation 'io.github.Rosemoe.sora-editor:editor-lsp:0.20.4'
+    implementation 'io.github.Rosemoe.sora-editor:language-textmate:0.20.4'
+    implementation 'io.github.Rosemoe.sora-editor:language-treesitter:0.20.4'
     
     //rx
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'

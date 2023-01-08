@@ -1,9 +1,11 @@
 package dev.asm.awebkit.ui.editor;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -12,6 +14,7 @@ import dev.asm.awebkit.databinding.FragBottomEditorBinding;
 import dev.asm.awebkit.ui.base.BaseFragment;
 import dev.asm.awebkit.ui.editor.EditorFragment;
 import dev.asm.awebkit.viewmodels.bottomsheets.BottomSheetViewModel;
+import io.github.rosemoe.sora.widget.SymbolInputView;
 
 public class BottomEditorFragment extends BaseFragment {
     
@@ -31,6 +34,8 @@ public class BottomEditorFragment extends BaseFragment {
         initViewModels();
         
         var inputView = binding.symbolInput;
+        var typeface = Typeface.createFromAsset(requireActivity().getAssets(),"fonts/JetBrainsMono-Regular.ttf");
+        
         try{
             inputView.bindEditor(EditorFragment.getCodeEditor());
         }catch(Exception e){
@@ -44,7 +49,9 @@ public class BottomEditorFragment extends BaseFragment {
                 "\t","<>",">","()",")","{}","}",",",".",";","\"","?","+","-","*","/"
             }
         );
-        
+        inputView.forEachButton((ib)->{
+            ib.setTypeface(typeface);
+        });
         bottomsheetVM.getCurrentState().observe(getViewLifecycleOwner(), state -> {
             if(state == BottomSheetBehavior.STATE_EXPANDED){
                 binding.symbolInput.setVisibility(View.INVISIBLE);

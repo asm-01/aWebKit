@@ -1,0 +1,13 @@
+{
+  "languages": [
+    {
+      "grammar": "textmate/languages/html/syntaxes/html.tmLanguage.json",
+      "name": "html",
+      "scopeName": "text.html.basic",
+      "languageConfiguration": "textmate/languages/html/language-configuration.json",
+      "embeddedLanguages": {
+        "source.js": "javascript"
+      }
+    }
+  ]
+}

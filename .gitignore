@@ -10,9 +10,8 @@
 .DS_Store
 /build
 /captures
-/ClonedRepo
 .externalNativeBuild
 .cxx
 local.properties
-/ClonedRepo
+.androidide
 /lsp

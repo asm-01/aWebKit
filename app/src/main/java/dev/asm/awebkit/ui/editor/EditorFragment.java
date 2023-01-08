@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.view.View;
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import dev.asm.awebkit.BaseApp;
 import dev.asm.awebkit.databinding.FragEditorBinding;
 import dev.asm.awebkit.ui.base.BaseFragment;
 import dev.asm.awebkit.viewmodels.tabs.TabItemViewModel;
@@ -17,13 +19,18 @@ import io.github.rosemoe.sora.lang.EmptyLanguage;
 import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage;
+import io.github.rosemoe.sora.langs.textmate.registry.FileProviderRegistry;
+import io.github.rosemoe.sora.langs.textmate.registry.GrammarRegistry;
+import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry;
+import io.github.rosemoe.sora.langs.textmate.registry.dsl.GrammarDefinitionDSLKt;
+import io.github.rosemoe.sora.langs.textmate.registry.model.ThemeModel;
+import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver;
 import io.github.rosemoe.sora.text.ContentCreator;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import org.eclipse.tm4e.core.internal.theme.reader.ThemeReader;
-import org.eclipse.tm4e.core.theme.IRawTheme;
+import org.eclipse.tm4e.core.registry.IThemeSource;
 
 public class EditorFragment extends BaseFragment {
     
@@ -62,49 +69,27 @@ public class EditorFragment extends BaseFragment {
                 return;
             }
             
-            setupEditorThemeAndLanguage("Dracula.tmTheme",uri.getLastPathSegment());
             if(!binding.codeEditor.isEditable()){
                 binding.codeEditor.setEditable(true);
             }
             binding.codeEditor.setText("");
             binding.codeEditor.setText(getContentFromUri(uri));
         });
+        setEditorTheme(THEME_TEXTMATE,"Dracula.tmTheme");
+        
+        try{
+            var language = TextMateLanguage.create("source.java",true);
+            binding.codeEditor.setEditorLanguage(language);
+        }catch (Exception e){
+            e.printStackTrace();
+            binding.codeEditor.setEditorLanguage(new EmptyLanguage());
+        }
+        
     }
     
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-    
-    private void setEditorLanguageAndTheme(@Nullable String themeName,@Nullable String langExtension, @Nullable String langName){
-        try {
-            editorColorScheme = binding.codeEditor.getColorScheme();
-            if (!(editorColorScheme instanceof TextMateColorScheme)) {
-                IRawTheme iRawTheme =
-                	ThemeReader.readThemeSync(
-                    themeName, requireActivity().getAssets().open("textmate/themes/"+themeName));
-                editorColorScheme = TextMateColorScheme.create(iRawTheme);
-                binding.codeEditor.setColorScheme(editorColorScheme);
-            }
-            if(langExtension != null && langName != null){
-                Language language =
-            	TextMateLanguage.create(
-                langName,
-                requireActivity()
-                	.getAssets()
-                    .open("textmate/languages/"+langExtension+"/syntaxes/"+langName),
-                new InputStreamReader(
-                	requireActivity()
-                    	.getAssets()
-                        .open("textmate/languages/"+langExtension+"/language-configuration.json")),
-                ((TextMateColorScheme) editorColorScheme).getRawTheme());
-            binding.codeEditor.setEditorLanguage(language);
-            }else{
-                binding.codeEditor.setEditorLanguage(new EmptyLanguage());
-            }
-        } catch (Exception e) {
-        	Log.e(TAG,e.getMessage());
-        }
     }
     
     public static CodeEditor getCodeEditor(){
@@ -128,7 +113,7 @@ public class EditorFragment extends BaseFragment {
         return content;
     }
     
-    private void setupEditorThemeAndLanguage(String themeName, String extension){
+    /*private void setupEditorThemeAndLanguage(String themeName, String extension){
         if(extension.endsWith(".css")){//d
             setEditorLanguageAndTheme(themeName,"css","css.tmLanguage.json");
         }else if(extension.endsWith(".html")){//d
@@ -162,5 +147,50 @@ public class EditorFragment extends BaseFragment {
         }else{
             setEditorLanguageAndTheme(null,null,null);
         }
+    }*/
+    
+    //theme types
+    public static int THEME_DEFAULT = 0;
+    public static int THEME_TEXTMATE = 1;
+    
+    private void setEditorTheme(@IntegerRes int themeType, @Nullable String themeName){
+        if(themeType == THEME_TEXTMATE && themeName!=null){
+            var path = "textmate/themes/" + themeName;
+            var editorColorScheme = binding.codeEditor.getColorScheme();
+            if (!(editorColorScheme instanceof TextMateColorScheme)) {
+                try{
+                    FileProviderRegistry.getInstance().addFileProvider(new AssetsFileResolver(requireActivity().getAssets()));
+                    var themeRegistry = ThemeRegistry.getInstance();
+                    themeRegistry.loadTheme(new ThemeModel(IThemeSource.fromInputStream(FileProviderRegistry.getInstance().tryGetInputStream(path),path,null),themeName));
+                    themeRegistry.setTheme(themeName);
+                    binding.codeEditor.setColorScheme(TextMateColorScheme.create(themeRegistry));
+                }catch (Exception e){
+                    BaseApp.showToast("setEditorTheme=> " + e.getMessage());
+                }
+            }
+        }
     }
+    
+    //language types
+    public static int LANG_DEFAULT = 0;
+    public static int LANG_TEXTMATE = 1;
+    public static int LANG_TREESITTER = 2;
+    
+    public static String EXT_CSS = ".css";
+    
+    private void setEditorLanguage(@IntegerRes int langType, @Nullable String langName, @Nullable String scopeName){
+        if(langType == LANG_TEXTMATE && langName != null){
+            var path = "textmate/languages/" + langName;
+            /*try{
+                var language = TextMateLanguage.create(
+                    scopeName,
+                    GrammarRegistry.getInstance().loadGrammars(),
+                    true);
+                binding.codeEditor.setEditorLanguage(language);
+            }catch (Exception e){
+                binding.codeEditor.setEditorLanguage(new EmptyLanguage());
+            }*/
+        }
+    }
+    
 }
