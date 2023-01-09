@@ -124,9 +124,10 @@ implements TreeView.Adapter.OnTreeItemClickListener<DocumentFileCompat> {
                 	holder.svgIcon.setSVG(SVG.getFromAsset(app.getAssets(),app.getResources().getString(R.string.ext_xml)));
                 }else if(item.getValue().getName().endsWith(".yml")){
                 	holder.svgIcon.setSVG(SVG.getFromAsset(app.getAssets(),app.getResources().getString(R.string.ext_yaml)));
-                }else if(item.getValue().getName().endsWith(".png") || 
-                		item.getValue().getName().endsWith(".jpg") || 
-                        item.getValue().getName().endsWith(".mp4") || 
+                }else if(item.getValue().getName().endsWith(".png") ||
+                		item.getValue().getName().endsWith(".jpg") ||
+                        item.getValue().getName().endsWith(".jpeg") ||
+                        item.getValue().getName().endsWith(".mp4") ||
                         item.getValue().getName().endsWith(".mp3")){
                 	// TODO : Add more conditions for other media extension
                     holder.svgIcon.setSVG(SVG.getFromAsset(app.getAssets(),app.getResources().getString(R.string.common_file_media)));
@@ -144,7 +145,7 @@ implements TreeView.Adapter.OnTreeItemClickListener<DocumentFileCompat> {
             }
         }
 
-        holder.name.setText(item.getValue().getName());
+        holder.name.setText(item.getValue().getName() + " => " +item.getValue().getDocumentMimeType$filecompat_release() + "," + item.getValue().getExtension());
       holder.itemView.setOnLongClickListener(v->{
           if(item.isExpandable()){
               showFolderPopup(v,item.getValue().getUri());

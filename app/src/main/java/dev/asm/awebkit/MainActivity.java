@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.PopupMenu;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -17,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
+import com.lazygeniouz.filecompat.file.DocumentFileCompat;
 import dev.asm.awebkit.BaseApp;
 import dev.asm.awebkit.databinding.ActivityMainBinding;
 import dev.asm.awebkit.pojos.TabModel;
@@ -87,38 +90,47 @@ public class MainActivity extends BaseActivity
             if(uri!=null){
                 var tabPath = uri.getLastPathSegment();
                 var tabName = tabPath.replaceFirst(".*/([^/?]+).*","$1");
-                
-                if(binding.tabLayout.getVisibility() == View.GONE){
-                    binding.tabLayout.setVisibility(View.VISIBLE);
+                var documentFile = DocumentFile.fromSingleUri(this,uri);
+                if(!documentFile.exists()){
+                    return;
                 }
-                
-                var isExistTab = false;
-                var exitTabIndex = 0;
-                
-                //make sure do not add existing items
-                for(int i = 0 ; i < binding.tabLayout.getTabCount() ; i++){
-                    if(binding.tabLayout.getTabAt(i).getText().toString().equals(tabName)){
-                        isExistTab = true;
-                        exitTabIndex = i;
-                    }
-                }
-                if(!isExistTab){
-                    uniqueTabItems.add(new TabModel(tabName,uri));
-                    binding.tabLayout.addTab(binding.tabLayout.newTab().setText(tabName),true);
+                if(!isReadableMimeType(documentFile.getType()) && isOpenableExtension(MimeTypeMap.getSingleton().getExtensionFromMimeType(documentFile.getType()))){
+                    //do open for specific file
+                    BaseApp.showToast(documentFile.getName());
+                    return;
                 }else{
-                    if(tabPath.equals(uniqueTabItems.get(exitTabIndex).getUri().getLastPathSegment())){
-                        //existing tab with the same filepath
-                        if(binding.tabLayout.getSelectedTabPosition() != exitTabIndex){
-                            binding.tabLayout.selectTab(binding.tabLayout.getTabAt(exitTabIndex),true);
-                         }
-                    }else{
-                        //existing tab but filepath is different
-                        //so add as new one
+                    if(binding.tabLayout.getVisibility() == View.GONE){
+                        binding.tabLayout.setVisibility(View.VISIBLE);
+                    }
+                    
+                    var isExistTab = false;
+                    var exitTabIndex = 0;
+                    
+                    //make sure do not add existing items
+                    for(int i = 0 ; i < binding.tabLayout.getTabCount() ; i++){
+                        if(binding.tabLayout.getTabAt(i).getText().toString().equals(tabName)){
+                            isExistTab = true;
+                            exitTabIndex = i;
+                        }
+                    }
+                    if(!isExistTab){
                         uniqueTabItems.add(new TabModel(tabName,uri));
                         binding.tabLayout.addTab(binding.tabLayout.newTab().setText(tabName),true);
+                    }else{
+                        if(tabPath.equals(uniqueTabItems.get(exitTabIndex).getUri().getLastPathSegment())){
+                            //existing tab with the same filepath
+                            if(binding.tabLayout.getSelectedTabPosition() != exitTabIndex){
+                                binding.tabLayout.selectTab(binding.tabLayout.getTabAt(exitTabIndex),true);
+                             }
+                        }else{
+                            //existing tab but filepath is different
+                            //so add as new one
+                            uniqueTabItems.add(new TabModel(tabName,uri));
+                            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(tabName),true);
+                        }
                     }
                 }
-                
+                 
                 //close drawer after item click
                 if(binding.drawerLayout.isOpen()){
                     binding.drawerLayout.closeDrawer(GravityCompat.START);
@@ -130,6 +142,33 @@ public class MainActivity extends BaseActivity
                 }
             }
         });
+    }
+    
+    private boolean isReadableMimeType(@NonNull String mimeType){
+        return mimeType.equals("text/plain")||mimeType.equals("text/html")||mimeType.equals("text/xml")
+        ||mimeType.equals("text/css")||mimeType.equals("text/x-java");
+    }
+    
+    //https://android.googlesource.com/platform/external/mime-support/+/9817b71a54a2ee8b691c1dfa937c0f9b16b3473c/mime.types
+    //https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+    //https://stuff.mit.edu/afs/sipb/project/android/docs/guide/appendix/media-formats.html
+    
+    private boolean isOpenableExtension(@NonNull String ext){
+        return isArchiveTypes(ext) || isMediaTypes(ext);
+    }
+    
+    private boolean isArchiveTypes(@NonNull String ext){
+        return ext.equals("zip")||ext.equals("7z")||ext.equals("tar")||ext.equals("gz")||ext.equals("xz")||
+        ext.equals("rar")||ext.equals("jar")||ext.equals("apk")||ext.equals("dex")||ext.equals("arsc");
+    }
+    
+    private boolean isMediaTypes(@NonNull String ext){
+        return ext.equals("3gp")||ext.equals("mp4")||ext.equals("webm")||ext.equals("mkv")//video
+        ||ext.equals("jpg")||ext.equals("jpeg")||ext.equals("png")||ext.equals("gif")||
+        ext.equals("webp")||ext.equals("bmp")//image
+        ||ext.equals("wav")||ext.equals("imy")||ext.equals("ota")||ext.equals("rtttl")||
+        ext.equals("rtx")||ext.equals("xmf")||ext.equals("mxmf")||ext.equals("mid")||
+        ext.equals("mp3")||ext.equals("flac")||ext.equals("aac")||ext.equals("m4a");//audio
     }
     
     private void setupToolBar(){
