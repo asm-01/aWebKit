@@ -2,34 +2,27 @@ package dev.asm.awebkit.ui.editor;
 
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.util.Log;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.view.View;
-import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import dev.asm.awebkit.BaseApp;
 import dev.asm.awebkit.databinding.FragEditorBinding;
 import dev.asm.awebkit.ui.base.BaseFragment;
 import dev.asm.awebkit.viewmodels.tabs.TabItemViewModel;
 import io.github.rosemoe.sora.lang.EmptyLanguage;
-import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage;
 import io.github.rosemoe.sora.langs.textmate.registry.FileProviderRegistry;
 import io.github.rosemoe.sora.langs.textmate.registry.GrammarRegistry;
 import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry;
-import io.github.rosemoe.sora.langs.textmate.registry.dsl.GrammarDefinitionDSLKt;
 import io.github.rosemoe.sora.langs.textmate.registry.model.ThemeModel;
 import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver;
 import io.github.rosemoe.sora.text.ContentCreator;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import org.eclipse.tm4e.core.registry.IThemeSource;
 
 public class EditorFragment extends BaseFragment {
@@ -61,6 +54,9 @@ public class EditorFragment extends BaseFragment {
         
         binding.codeEditor.setTypefaceText(Typeface.createFromAsset(requireActivity().getAssets(),"fonts/JetBrainsMono-Regular.ttf"));
         binding.codeEditor.setLineSpacing(2f, 1.1f);
+        loadDefaultThemes();
+        loadDefaultLanguages();
+        ensureTextmateTheme();
         
         tabitemVM.getRequestedUri().observe(getViewLifecycleOwner(), uri -> {
             if(uri == null){
@@ -72,19 +68,10 @@ public class EditorFragment extends BaseFragment {
             if(!binding.codeEditor.isEditable()){
                 binding.codeEditor.setEditable(true);
             }
+            setCurrentLanguage(uri);
             binding.codeEditor.setText("");
             binding.codeEditor.setText(getContentFromUri(uri));
         });
-        setEditorTheme(THEME_TEXTMATE,"Dracula.tmTheme");
-        
-        try{
-            var language = TextMateLanguage.create("source.java",true);
-            binding.codeEditor.setEditorLanguage(language);
-        }catch (Exception e){
-            e.printStackTrace();
-            binding.codeEditor.setEditorLanguage(new EmptyLanguage());
-        }
-        
     }
     
     @Override
@@ -113,84 +100,90 @@ public class EditorFragment extends BaseFragment {
         return content;
     }
     
-    /*private void setupEditorThemeAndLanguage(String themeName, String extension){
-        if(extension.endsWith(".css")){//d
-            setEditorLanguageAndTheme(themeName,"css","css.tmLanguage.json");
-        }else if(extension.endsWith(".html")){//d
-            setEditorLanguageAndTheme(themeName,"html","html.tmLanguage.json");
-        }if(extension.endsWith(".java")){//d
-            setEditorLanguageAndTheme(themeName,"java","java.tmLanguage.json");
-        }else if(extension.endsWith(".js")){//d
-            setEditorLanguageAndTheme(themeName,"javascript","javascript.tmLanguage.json");
-        }else if(extension.endsWith(".json")){
-            setEditorLanguageAndTheme(themeName,"json","json.tmLanguage.json");
-        }else if(extension.endsWith(".kt")){
-            setEditorLanguageAndTheme(themeName,"kotlin","kotlin.tmLanguage");
-        }else if(extension.endsWith(".less")){
-            setEditorLanguageAndTheme(themeName,"less","less.tmLanguage.json");
-        }else if(extension.endsWith(".lua")){
-            setEditorLanguageAndTheme(themeName,"lua","lua.tmLanguage.json");
-        }else if(extension.endsWith(".md")){//d
-            setEditorLanguageAndTheme(themeName,"markdown","markdown.tmLanguage.json");
-        }else if(extension.endsWith(".php")){
-            setEditorLanguageAndTheme(themeName,"php","php.tmLanguage.json");
-        }else if(extension.endsWith(".py")){//d
-            setEditorLanguageAndTheme(themeName,"python","python.tmLanguage.json");
-        }else if(extension.endsWith(".scss")){//d
-            setEditorLanguageAndTheme(themeName,"scss","scss.tmLanguage.json");
-        }else if(extension.endsWith(".ts")){//d
-            setEditorLanguageAndTheme(themeName,"typescript","typescript.tmLanguage.json");
-        }else if(extension.endsWith(".xml")){//d
-            setEditorLanguageAndTheme(themeName,"xml","xml.tmLanguage.json");
-        }else if(extension.endsWith(".yaml")){
-            setEditorLanguageAndTheme(themeName,"yaml","yaml.tmLanguage.json");
+    public static String EXT_CSS = ".css";
+    public static String EXT_HTML = ".html";
+    public static String EXT_JAVA = ".java";
+    public static String EXT_JAVASCRIPT = ".js";
+    public static String EXT_JSON = ".json";
+    public static String EXT_KOTLIN = ".kt";
+    public static String EXT_LESS = ".less";
+    public static String EXT_LUA = ".lua";
+    public static String EXT_MARKDOWN = ".md";
+    public static String EXT_PHP = ".php";
+    public static String EXT_PYTHON = ".py";
+    public static String EXT_SCSS = ".scss";
+    public static String EXT_TYPESCRIPT = ".ts";
+    public static String EXT_XML = ".xml";
+    public static String EXT_YAML = ".yaml";
+    public static String EXT_YML = ".yml";
+    
+    private void setCurrentLanguage(Uri uri){
+        var path = uri.getLastPathSegment();
+        if(path.endsWith(EXT_CSS)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.css",true));
+        }else if(path.endsWith(EXT_HTML)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("text.html.basic",true));
+        }else if(path.endsWith(EXT_JAVA)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.java",false));
+        }else if(path.endsWith(EXT_JAVASCRIPT)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.js",true));
+        }else if(path.endsWith(EXT_JSON)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.json",false));
+        }else if(path.endsWith(EXT_KOTLIN)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.kotlin",false));
+        }else if(path.endsWith(EXT_LESS)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.css.less",false));
+        }else if(path.endsWith(EXT_LUA)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.lua",false));
+        }else if(path.endsWith(EXT_MARKDOWN)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("text.html.markdown",false));
+        }else if(path.endsWith(EXT_PHP)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.php",true));
+        }else if(path.endsWith(EXT_PYTHON)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.python",false));
+        }else if(path.endsWith(EXT_SCSS)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.css.scss",false));
+        }else if(path.endsWith(EXT_TYPESCRIPT)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.ts",false));
+        }else if(path.endsWith(EXT_XML)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("text.xml",false));
+        }else if(path.endsWith(EXT_YAML) || path.endsWith(EXT_YML)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.yaml",false));
         }else{
-            setEditorLanguageAndTheme(null,null,null);
+            binding.codeEditor.setEditorLanguage(new EmptyLanguage());
         }
-    }*/
+    }
     
-    //theme types
-    public static int THEME_DEFAULT = 0;
-    public static int THEME_TEXTMATE = 1;
+    private void loadDefaultThemes(){
+        FileProviderRegistry.getInstance().addFileProvider(new AssetsFileResolver(requireActivity().getAssets()));
+        
+        String[] themes = {"Dracula.tmTheme","QuietLight.tmTheme"};
+        var themeRegistry = ThemeRegistry.getInstance();
+        
+        for(String name : themes){
+            var path = "textmate/themes/" + name;
+            try{
+                themeRegistry.loadTheme(new ThemeModel(IThemeSource.fromInputStream(FileProviderRegistry.getInstance().tryGetInputStream(path),path,null),name));
+            }catch(Exception e){
+                Log.e(TAG,e.getMessage());
+            }
+        }
+        themeRegistry.setTheme("Dracula.tmTheme");
+    }
     
-    private void setEditorTheme(@IntegerRes int themeType, @Nullable String themeName){
-        if(themeType == THEME_TEXTMATE && themeName!=null){
-            var path = "textmate/themes/" + themeName;
-            var editorColorScheme = binding.codeEditor.getColorScheme();
-            if (!(editorColorScheme instanceof TextMateColorScheme)) {
-                try{
-                    FileProviderRegistry.getInstance().addFileProvider(new AssetsFileResolver(requireActivity().getAssets()));
-                    var themeRegistry = ThemeRegistry.getInstance();
-                    themeRegistry.loadTheme(new ThemeModel(IThemeSource.fromInputStream(FileProviderRegistry.getInstance().tryGetInputStream(path),path,null),themeName));
-                    themeRegistry.setTheme(themeName);
-                    binding.codeEditor.setColorScheme(TextMateColorScheme.create(themeRegistry));
-                }catch (Exception e){
-                    BaseApp.showToast("setEditorTheme=> " + e.getMessage());
-                }
+    private void loadDefaultLanguages(){
+        GrammarRegistry.getInstance().loadGrammars("textmate/languages.json");
+    }
+    
+    private void ensureTextmateTheme(){
+        var editor = binding.codeEditor;
+        var editorColorScheme = editor.getColorScheme();
+        if(!(editorColorScheme instanceof TextMateColorScheme)){
+            try{
+                editor.setColorScheme(TextMateColorScheme.create(ThemeRegistry.getInstance()));
+            }catch(Exception e){
+                Log.e(TAG,e.getMessage());
             }
         }
     }
-    
-    //language types
-    public static int LANG_DEFAULT = 0;
-    public static int LANG_TEXTMATE = 1;
-    public static int LANG_TREESITTER = 2;
-    
-    public static String EXT_CSS = ".css";
-    
-    private void setEditorLanguage(@IntegerRes int langType, @Nullable String langName, @Nullable String scopeName){
-        if(langType == LANG_TEXTMATE && langName != null){
-            var path = "textmate/languages/" + langName;
-            /*try{
-                var language = TextMateLanguage.create(
-                    scopeName,
-                    GrammarRegistry.getInstance().loadGrammars(),
-                    true);
-                binding.codeEditor.setEditorLanguage(language);
-            }catch (Exception e){
-                binding.codeEditor.setEditorLanguage(new EmptyLanguage());
-            }*/
-        }
-    }
-    
 }
