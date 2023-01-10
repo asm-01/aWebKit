@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.PopupMenu;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -20,7 +18,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.lazygeniouz.filecompat.file.DocumentFileCompat;
-import dev.asm.awebkit.BaseApp;
 import dev.asm.awebkit.databinding.ActivityMainBinding;
 import dev.asm.awebkit.pojos.TabModel;
 import dev.asm.awebkit.ui.base.BaseActivity;
@@ -99,7 +96,7 @@ public class MainActivity extends BaseActivity
                 var extension = documentFile.getExtension();
                 if(DocumentFileValidator.isOpenableType(mimeType) || DocumentFileValidator.isRestrictedExtension(extension) || !DocumentFileValidator.isEditableType(mimeType)){
                     //do open for specific file
-                    BaseApp.showToast(documentFile.getName());
+                    BaseApp.showToast(documentFile.getName() + " => " + mimeType + " => " + extension );
                     return;
                 }else{
                     if(binding.tabLayout.getVisibility() == View.GONE){

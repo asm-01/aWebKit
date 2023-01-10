@@ -6,7 +6,8 @@ public class DocumentFileValidator {
     
     public static boolean isEditableType(@NonNull String mimeType){
         return mimeType.equals("text/plain")||mimeType.equals("text/html")||mimeType.equals("text/xml")
-        ||mimeType.equals("text/css")||mimeType.equals("text/x-java");
+        ||mimeType.equals("text/css")||mimeType.equals("text/x-java")||mimeType.equals("application/octet-stream")
+        ||mimeType.equals("image/svg+xml");
     }
     
     public static boolean isOpenableType(@NonNull String mimeType){
