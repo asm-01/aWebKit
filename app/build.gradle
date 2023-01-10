@@ -58,11 +58,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.4.1'
     implementation 'com.google.android.material:material:1.7.0'
-	
+    
+    //editor
     implementation 'io.github.Rosemoe.sora-editor:editor:0.20.4'
 	//implementation 'io.github.Rosemoe.sora-editor:editor-lsp:0.20.4'
     implementation 'io.github.Rosemoe.sora-editor:language-textmate:0.20.4'
-    implementation 'io.github.Rosemoe.sora-editor:language-treesitter:0.20.4'
+    //implementation 'io.github.Rosemoe.sora-editor:language-treesitter:0.20.4'
     
     //rx
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
@@ -73,9 +74,11 @@ dependencies {
     
     //others
     implementation "com.lazygeniouz:documentfile_compat:0.8"//fast af
-    implementation files('libs/androidsvg-aar-1.4.aar')
     implementation 'com.blankj:utilcodex:1.31.1'
 	implementation "com.github.ikws4:TreeView:0.1.1"
+	
+    //local
+    implementation files('libs/androidsvg-aar-1.4.aar')
 }
 
 tasks.withType(JavaCompile) {
