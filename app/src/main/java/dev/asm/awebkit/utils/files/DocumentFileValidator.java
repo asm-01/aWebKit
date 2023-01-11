@@ -7,14 +7,18 @@ public class DocumentFileValidator {
     public static boolean isEditableType(@NonNull String mimeType){
         return mimeType.equals("text/plain")||mimeType.equals("text/html")||mimeType.equals("text/xml")
         ||mimeType.equals("text/css")||mimeType.equals("text/x-java")||mimeType.equals("application/octet-stream")
-        ||mimeType.equals("image/svg+xml");
+        ||mimeType.equals("image/svg+xml")||mimeType.equals("video/mp2ts");
     }
     
     public static boolean isOpenableType(@NonNull String mimeType){
-        return mimeType.contains("audio")||mimeType.contains("video")||imageButNotSvg(mimeType)
+        return mimeType.contains("audio")||videoButNotTypescript(mimeType)||imageButNotSvg(mimeType)
         ||mimeType.contains("zip")||mimeType.contains("rar")
         ||mimeType.contains("epub")||mimeType.contains("pdf")
         ||mimeType.contains("vnd.android.package-archive");
+    }
+    
+    public static boolean videoButNotTypescript(@NonNull String mimeType){
+        return mimeType.contains("videp") && !mimeType.equals("video/mp2ts");
     }
     
     public static boolean imageButNotSvg(@NonNull String mimeType){
