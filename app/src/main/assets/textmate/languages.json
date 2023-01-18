@@ -44,13 +44,19 @@
       "grammar": "textmate/languages/less/syntaxes/less.tmLanguage.json",
       "name": "less",
       "scopeName": "source.css.less",
-      "languageConfiguration": "textmate/languages/less/language-configuration.json"
+      "languageConfiguration": "textmate/languages/less/language-configuration.json",
+      "embeddedLanguages": {
+        "source.css": "css"
+      }
     },
     {
       "grammar": "textmate/languages/lua/syntaxes/lua.tmLanguage.json",
       "name": "lua",
       "scopeName": "source.lua",
-      "languageConfiguration": "textmate/languages/lua/language-configuration.json"
+      "languageConfiguration": "textmate/languages/lua/language-configuration.json",
+      "embeddedLanguages": {
+        "source.c": "c"
+      }
     },
     {
       "grammar": "textmate/languages/markdown/syntaxes/markdown.tmLanguage.json",
@@ -66,7 +72,9 @@
       "embeddedLanguages": {
         "source.js": "javascript",
         "source.css": "css",
-        "text.html.basic": "html"
+        "text.html.basic": "html",
+        "text.xml": "xml",
+        "source.json": "json"
       }
     },
     {
@@ -79,7 +87,10 @@
       "grammar": "textmate/languages/scss/syntaxes/scss.tmLanguage.json",
       "name": "scss",
       "scopeName": "source.css.scss",
-      "languageConfiguration": "textmate/languages/scss/language-configuration.json"
+      "languageConfiguration": "textmate/languages/scss/language-configuration.json",
+      "embeddedLanguages": {
+        "source.css": "css"
+      }
     },
     {
       "grammar": "textmate/languages/typescript/syntaxes/typescript.tmLanguage.json",
@@ -91,7 +102,10 @@
       "grammar": "textmate/languages/xml/syntaxes/xml.tmLanguage.json",
       "name": "xml",
       "scopeName": "text.xml",
-      "languageConfiguration": "textmate/languages/xml/language-configuration.json"
+      "languageConfiguration": "textmate/languages/xml/language-configuration.json",
+      "embeddedLanguages": {
+        "source.java": "java"
+      }
     },
     {
       "grammar": "textmate/languages/yaml/syntaxes/yaml.tmLanguage.json",
