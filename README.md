@@ -15,7 +15,7 @@
 <!-- License -->
 <img src="https://img.shields.io/github/license/asm-01/awebkit" alt="License">
 <!-- Codacy Badge -->
-<img src="https://codacy.com/gh/asm-01/awebkit/dashboard" alt="Codacy Badge">
+<img src="https://app.codacy.com/gh/asm-01/aWebKit/dashboard?branch=main" alt="Codacy Badge">
 <!-- Commit Activity -->
 <img src="https://img.shields.io/github/commit-activity/m/asm-01/awebkit" alt="Commit Activity">
 <!-- Repository Size -->
