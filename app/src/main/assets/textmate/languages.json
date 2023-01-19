@@ -29,9 +29,21 @@
       "languageConfiguration": "textmate/languages/javascript/language-configuration.json"
     },
     {
+      "grammar": "textmate/languages/javascript/syntaxes/javascriptreact.tmLanguage.json",
+      "name": "javascriptreact",
+      "scopeName": "source.js.jsx",
+      "languageConfiguration": "textmate/languages/javascript/language-configuration.json"
+    },
+    {
       "grammar": "textmate/languages/json/syntaxes/json.tmLanguage.json",
       "name": "json",
       "scopeName": "source.json",
+      "languageConfiguration": "textmate/languages/json/language-configuration.json"
+    },
+    {
+      "grammar": "textmate/languages/json/syntaxes/jsonc.tmLanguage.json",
+      "name": "jsonc",
+      "scopeName": "source.json.comments",
       "languageConfiguration": "textmate/languages/json/language-configuration.json"
     },
     {
@@ -53,10 +65,7 @@
       "grammar": "textmate/languages/lua/syntaxes/lua.tmLanguage.json",
       "name": "lua",
       "scopeName": "source.lua",
-      "languageConfiguration": "textmate/languages/lua/language-configuration.json",
-      "embeddedLanguages": {
-        "source.c": "c"
-      }
+      "languageConfiguration": "textmate/languages/lua/language-configuration.json"
     },
     {
       "grammar": "textmate/languages/markdown/syntaxes/markdown.tmLanguage.json",
@@ -74,7 +83,8 @@
         "source.css": "css",
         "text.html.basic": "html",
         "text.xml": "xml",
-        "source.json": "json"
+        "source.json": "json",
+        "source.sql": "sql"
       }
     },
     {
@@ -93,9 +103,21 @@
       }
     },
     {
+      "grammar": "textmate/languages/sql/syntaxes/sql.tmLanguage.json",
+      "name": "sql",
+      "scopeName": "source.sql",
+      "languageConfiguration": "textmate/languages/sql/language-configuration.json"
+    },
+    {
       "grammar": "textmate/languages/typescript/syntaxes/typescript.tmLanguage.json",
       "name": "typescript",
       "scopeName": "source.ts",
+      "languageConfiguration": "textmate/languages/typescript/language-configuration.json"
+    },
+    {
+      "grammar": "textmate/languages/typescript/syntaxes/typescriptreact.tmLanguage.json",
+      "name": "typescriptreact",
+      "scopeName": "source.tsx",
       "languageConfiguration": "textmate/languages/typescript/language-configuration.json"
     },
     {
@@ -105,6 +127,15 @@
       "languageConfiguration": "textmate/languages/xml/language-configuration.json",
       "embeddedLanguages": {
         "source.java": "java"
+      }
+    },
+    {
+      "grammar": "textmate/languages/xsl/syntaxes/xsl.tmLanguage.json",
+      "name": "xsl",
+      "scopeName": "text.xml",
+      "languageConfiguration": "textmate/languages/xsl/language-configuration.json",
+      "embeddedLanguages": {
+        "text.xml": "xml"
       }
     },
     {
