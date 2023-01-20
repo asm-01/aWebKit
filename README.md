@@ -1,8 +1,5 @@
 # aWebKit
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d3a7f0cf76ec43eea3f0da081d35d0a4)](https://app.codacy.com/gh/asm-01/aWebKit?utm_source=github.com&utm_medium=referral&utm_content=asm-01/aWebKit&utm_campaign=Badge_Grade_Settings)
-
-
 <p align="center">
 <!-- Stability -->
 <img src="https://img.shields.io/badge/stability-alpha-f4d03f.svg" alt="stability-alpha">
