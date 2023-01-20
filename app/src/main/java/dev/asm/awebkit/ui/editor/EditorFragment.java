@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
+import dev.asm.awebkit.BaseApp;
 import dev.asm.awebkit.databinding.FragEditorBinding;
 import dev.asm.awebkit.ui.base.BaseFragment;
 import dev.asm.awebkit.utils.files.ExtensionsValidator;
@@ -164,7 +165,11 @@ public class EditorFragment extends BaseFragment {
     }
     
     private void loadDefaultLanguages(){
-        GrammarRegistry.getInstance().loadGrammars("textmate/languages.json");
+        try{
+            GrammarRegistry.getInstance().loadGrammars("textmate/languages.json");
+        }catch(Exception e){
+            BaseApp.showToast(e.getMessage());
+        }
     }
     
     private void ensureTextmateTheme(){
