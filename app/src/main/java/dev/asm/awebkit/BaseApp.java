@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 import com.google.android.material.color.DynamicColors;
-import com.itsaky.androidide.logsender.LogSender;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -54,7 +53,7 @@ public class BaseApp extends Application {
             applicationContext = getApplicationContext();
         }
         DynamicColors.applyToActivitiesIfAvailable(this);
-        LogSender.startLogging(this);
+        
     }
 
     private String getStackTrace(Throwable th){

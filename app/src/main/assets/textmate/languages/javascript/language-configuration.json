@@ -1,5 +1,4 @@
 {
-	
 	"comments": {
 		"lineComment": "//",
 		"blockComment": [
@@ -106,11 +105,84 @@
 			"end": "^\\s*//\\s*#?endregion\\b"
 		}
 	},
-	"wordPattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\!\\@\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>/\\?\\s]+)",
+	"wordPattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\!\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>/\\?\\s]+)",
 	"indentationRules": {
-		"decreaseIndentPattern": "^((?!.*?/\\*).*\\*\/)?\\s*[\\}\\]].*$",
-		"increaseIndentPattern": "^((?!//).)*(\\{([^}\"'`/]*|(\\t|[ ])*//.*)|\\([^)\"'`/]*|\\[[^\\]\"'`/]*)$",
-		
-		"unIndentedLinePattern": "^(\\t|[ ])*[ ]\\*[^/]*\\*/\\s*$|^(\\t|[ ])*[ ]\\*/\\s*$|^(\\t|[ ])*[ ]\\*([ ]([^\\*]|\\*(?!/))*)?$"
-	}
+		"decreaseIndentPattern": {
+			"pattern": "^((?!.*?/\\*).*\\*\/)?\\s*[\\}\\]].*$"
+		},
+		"increaseIndentPattern": {
+			"pattern": "^((?!//).)*(\\{([^}\"'`/]*|(\\t|[ ])*//.*)|\\([^)\"'`/]*|\\[[^\\]\"'`/]*)$"
+		},
+
+		"unIndentedLinePattern": {
+			"pattern": "^(\\t|[ ])*[ ]\\*[^/]*\\*/\\s*$|^(\\t|[ ])*[ ]\\*/\\s*$|^(\\t|[ ])*[ ]\\*([ ]([^\\*]|\\*(?!/))*)?$"
+		}
+	},
+	"onEnterRules": [
+		{
+			"beforeText": {
+				"pattern": "^\\s*/\\*\\*(?!/)([^\\*]|\\*(?!/))*$"
+			},
+			"afterText": {
+				"pattern": "^\\s*\\*/$"
+			},
+			"action": {
+				"indent": "indentOutdent",
+				"appendText": " * "
+			}
+		},
+		{
+
+			"beforeText": {
+				"pattern": "^\\s*/\\*\\*(?!/)([^\\*]|\\*(?!/))*$"
+			},
+			"action": {
+				"indent": "none",
+				"appendText": " * "
+			}
+		},
+		{
+			"beforeText": {
+				"pattern": "^(\\t|[ ])*[ ]\\*([ ]([^\\*]|\\*(?!/))*)?$"
+			},
+			"previousLineText": {
+				"pattern": "(?=^(\\s*(/\\*\\*|\\*)).*)(?=(?!(\\s*\\*/)))"
+			},
+			"action": {
+				"indent": "none",
+				"appendText": "* "
+			}
+		},
+		{
+
+			"beforeText": {
+				"pattern": "^(\\t|[ ])*[ ]\\*/\\s*$"
+			},
+			"action": {
+				"indent": "none",
+				"removeText": 1
+			}
+		},
+		{
+
+			"beforeText": {
+				"pattern": "^(\\t|[ ])*[ ]\\*[^/]*\\*/\\s*$"
+			},
+			"action": {
+				"indent": "none",
+				"removeText": 1
+			}
+		},
+		{
+			"beforeText": {
+				"pattern": "^\\s*(\\bcase\\s.+:|\\bdefault:)$"
+			},
+			"afterText": {
+				"pattern": "^(?!\\s*(\\bcase\\b|\\bdefault\\b))"
+			},
+			"action": {
+				"indent": "indent"
+			}
+		}
+	]
 }

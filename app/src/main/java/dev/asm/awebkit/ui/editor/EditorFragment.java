@@ -165,11 +165,7 @@ public class EditorFragment extends BaseFragment {
     }
     
     private void loadDefaultLanguages(){
-        try{
-            GrammarRegistry.getInstance().loadGrammars("textmate/languages.json");
-        }catch(Exception e){
-            BaseApp.showToast(e.getMessage());
-        }
+        GrammarRegistry.getInstance().loadGrammars("textmate/languages.json");
     }
     
     private void ensureTextmateTheme(){

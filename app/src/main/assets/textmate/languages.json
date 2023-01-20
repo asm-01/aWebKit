@@ -132,7 +132,7 @@
     {
       "grammar": "textmate/languages/xsl/syntaxes/xsl.tmLanguage.json",
       "name": "xsl",
-      "scopeName": "text.xml",
+      "scopeName": "text.xml.xsl",
       "languageConfiguration": "textmate/languages/xsl/language-configuration.json",
       "embeddedLanguages": {
         "text.xml": "xml"

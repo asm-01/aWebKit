@@ -15,11 +15,11 @@
 <!-- License -->
 <img src="https://img.shields.io/github/license/asm-01/awebkit" alt="License">
 <!-- Codacy Badge -->
-<img src="https://app.codacy.com/gh/asm-01/aWebKit/dashboard?branch=main" alt="Codacy Badge">
+<img src="https://app.codacy.com/project/badge/Grade/9895fd6c42d746ac866f59e8f2f6fae5" alt="Codacy Badge">
 <!-- Commit Activity -->
-<img src="https://img.shields.io/github/commit-activity/m/asm-01/awebkit" alt="Commit Activity">
+<img src="https://img.shields.io/github/commit-activity/m/asm-01/aWebKit" alt="Commit Activity">
 <!-- Repository Size -->
-<img src="https://img.shields.io/github/repo-size/asm-01/awebkit" alt="Repository Size"></p>
+<img src="https://img.shields.io/github/repo-size/asm-01/aWebKit" alt="Repository Size"></p>
 
 # Disclaimer
 
