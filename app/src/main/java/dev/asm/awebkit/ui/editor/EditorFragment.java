@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import dev.asm.awebkit.databinding.FragEditorBinding;
 import dev.asm.awebkit.ui.base.BaseFragment;
+import dev.asm.awebkit.utils.files.ExtensionsValidator;
 import dev.asm.awebkit.viewmodels.tabs.TabItemViewModel;
 import io.github.rosemoe.sora.lang.EmptyLanguage;
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
@@ -100,54 +101,45 @@ public class EditorFragment extends BaseFragment {
         return content;
     }
     
-    public static String EXT_CSS = ".css";
-    public static String EXT_HTML = ".html";
-    public static String EXT_JAVA = ".java";
-    public static String EXT_JAVASCRIPT = ".js";
-    public static String EXT_JSON = ".json";
-    public static String EXT_KOTLIN = ".kt";
-    public static String EXT_LESS = ".less";
-    public static String EXT_LUA = ".lua";
-    public static String EXT_MARKDOWN = ".md";
-    public static String EXT_PHP = ".php";
-    public static String EXT_PYTHON = ".py";
-    public static String EXT_SCSS = ".scss";
-    public static String EXT_TYPESCRIPT = ".ts";
-    public static String EXT_XML = ".xml";
-    public static String EXT_YAML = ".yaml";
-    public static String EXT_YML = ".yml";
-    
     private void setCurrentLanguage(Uri uri){
         var path = uri.getLastPathSegment();
-        if(path.endsWith(EXT_CSS)){
+        if(ExtensionsValidator.isCss(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.css",true));
-        }else if(path.endsWith(EXT_HTML)){
+        }else if(ExtensionsValidator.isHtml(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("text.html.basic",true));
-        }else if(path.endsWith(EXT_JAVA)){
+        }else if(ExtensionsValidator.isJava(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.java",false));
-        }else if(path.endsWith(EXT_JAVASCRIPT)){
+        }else if(ExtensionsValidator.isJavaScript(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.js",true));
-        }else if(path.endsWith(EXT_JSON)){
+        }else if(ExtensionsValidator.isJavaScriptReact(path)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.js.jsx",true));
+        }else if(ExtensionsValidator.isJson(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.json",false));
-        }else if(path.endsWith(EXT_KOTLIN)){
+        }else if(ExtensionsValidator.isJsonC(path)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.json.comments",false));
+        }else if(ExtensionsValidator.isKotlin(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.kotlin",false));
-        }else if(path.endsWith(EXT_LESS)){
+        }else if(ExtensionsValidator.isLess(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.css.less",false));
-        }else if(path.endsWith(EXT_LUA)){
+        }else if(ExtensionsValidator.isLua(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.lua",false));
-        }else if(path.endsWith(EXT_MARKDOWN)){
+        }else if(ExtensionsValidator.isMarkDown(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("text.html.markdown",false));
-        }else if(path.endsWith(EXT_PHP)){
+        }else if(ExtensionsValidator.isPhp(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.php",true));
-        }else if(path.endsWith(EXT_PYTHON)){
+        }else if(ExtensionsValidator.isPython(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.python",false));
-        }else if(path.endsWith(EXT_SCSS)){
+        }else if(ExtensionsValidator.isScss(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.css.scss",false));
-        }else if(path.endsWith(EXT_TYPESCRIPT)){
+        }else if(ExtensionsValidator.isTypeScript(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.ts",false));
-        }else if(path.endsWith(EXT_XML)){
+        }else if(ExtensionsValidator.isTypeScriptReact(path)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.tsx",false));
+        }else if(ExtensionsValidator.isXml(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("text.xml",false));
-        }else if(path.endsWith(EXT_YAML) || path.endsWith(EXT_YML)){
+        }else if(ExtensionsValidator.isXsl(path)){
+            binding.codeEditor.setEditorLanguage(TextMateLanguage.create("text.xml.xsl",false));
+        }else if(ExtensionsValidator.isYaml(path)){
             binding.codeEditor.setEditorLanguage(TextMateLanguage.create("source.yaml",false));
         }else{
             binding.codeEditor.setEditorLanguage(new EmptyLanguage());
